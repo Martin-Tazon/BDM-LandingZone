@@ -8,5 +8,5 @@
 - Upload to mongoDB the different files for each source together with a timestamp
   - Idealista: Upload json objects
   - OpenDataBCN: Parse CSV files into json objects
-  - Lookup: ¿?
+  - Lookup: ¿? We add in the objects the reconciled district and neighbourhood. Do we keep only the reconciled or the original as well?
   
