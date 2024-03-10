@@ -1,5 +1,7 @@
 # BDM-LandingZone
 
+Does atlas needs new ips all the time?
+
 ## Temporal LZ
 - Consists of the directories and files that were given to us in the data.zip ¿?
 - For the future "new source" we will have to decide how we extract and store the data.
