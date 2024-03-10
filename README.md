@@ -13,4 +13,4 @@ Does atlas needs new ips all the time?
   - Lookup: ¿? We add in the objects the reconciled district and neighbourhood. Do we keep only the reconciled or the original as well?
   - Is this way of keeping timestamp correct?
   - If a file with the same name exists overwrite it 
-  
+  - When the loaders are done with reconciliation, drop database and add them again
