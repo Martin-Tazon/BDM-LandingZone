@@ -9,4 +9,6 @@
   - Idealista: Upload json objects
   - OpenDataBCN: Parse CSV files into json objects
   - Lookup: ¿? We add in the objects the reconciled district and neighbourhood. Do we keep only the reconciled or the original as well?
+  - Is this way of keeping timestamp correct?
+  - If a file with the same name exists overwrite it 
   
