@@ -27,19 +27,18 @@ def csv_to_json(csv_file):
 def add_file_to_db(path):
     files = sorted(glob(path + "*.csv"))
     print(path, files)
-    # for file in files:
-    #     fn = file.split("/")[-1].split(".")[0]
-    #     print(fn)
+    for file in files:
+        fn = file.split("/")[-1].split(".")[0]
+        print(fn)
 
-    #     # Create a collection for the CSV file
-    #     current_time = datetime.datetime.now()
-    #     collection = db[fn + "-" + current_time.strftime("%Y-%m-%dT%H:%M:%S")]
+        # Create a collection for the CSV file
+        current_time = datetime.datetime.now()
+        collection = db[fn + "-" + current_time.strftime("%Y-%m-%dT%H:%M:%S")]
 
-    #     # Insert the JSON data into the collection
-    #     collection.insert_many(csv_to_json(file))
+        # Insert the JSON data into the collection
+        collection.insert_many(csv_to_json(file))
 
 
 if __name__ == "__main__":
     path= sys.argv[1]
-    print(path)
     add_file_to_db(path)
