@@ -1,36 +1,56 @@
-import pandas as pd
 from hdfs import InsecureClient
 import os
-from glob import glob
-
-# To connect to WebHDFS by providing the IP of the HDFS host and the WebHDFS port.
-client = InsecureClient('http://10.4.41.44:9870/', user='bdm')
-print(client_hdfs)
-
-# # To create a simple pandas DataFrame.
-# liste_hello = ['hello1','hello2']
-# liste_world = ['world1','world2']
-# df = pd.DataFrame(data = {'hello' : liste_hello, 'world': liste_world})
-
-
-
-def read_local_file(local_path):
-    with open(local_path, 'r') as file:
-        data = file.read()
-    return data
-
-def write_to_hdfs(client, local_path, hdfs_path):
-    with open(local_path, 'r') as reader:
-         with client.write(hdfs_path, encoding = 'utf-8') as writer:
-            data = reader.read()
-            writer.write(data)
-
 
 sources = ['idealista', 'lookup_tables', 'opendatabcn-income']
+path_temporal_hdfs='user/bdm/temporal_landing/'
 
-for source in sources:
-    client_hdfs.makedirs(f'user/bdm/temporal_landing/{source}')
-    for file in os.listdir(f'../data/{source}/'):
-        write_to_hdfs(client_hdfs, f'../data/{source}/{file}', f'{source}/{file}')
+def ls_hdfs(client, path: str) -> list[str]:
+    if not path.startswith('user/bdm/'):
+        path = 'user/bdm/' + path
+    return client.list(path)
 
-    
+def du_hdfs(client, path: str) -> None:
+    if not path.startswith('user/bdm/'):
+        path = 'user/bdm/' + path
+    content = client.content(path)
+    print(f"Size of {path}: {content['length']} bytes")
+    if content['directoryCount'] > 0:
+        print(f"Path contains {content['directoryCount']} subdirectories.")
+        subdirs = ls_hdfs(client,path)
+        for sdir in subdirs:
+            content_sd = client.content(path+sdir)
+            print(f"    {sdir}: {content_sd['length']} bytes")
+
+def rm_hdfs(client, path: str, recursive: bool = True):
+    return client.delete(path, recursive=recursive)
+
+def upload_source_to_hdfs(client, source: str) -> None:
+    local_path = f"data/{source}/"
+    hdfs_path = path_temporal_hdfs + source
+
+    client.makedirs(hdfs_path)
+    for f in os.listdir(local_path):
+        client.upload(hdfs_path, local_path + f)
+
+
+
+
+if __name__ == "__main__":
+
+    # To connect to WebHDFS by providing the IP of the HDFS host and the WebHDFS port.
+    client_hdfs = InsecureClient('http://10.4.41.44:9870/', user='bdm')
+    print(client_hdfs)
+
+    # Initialize temporal landing dir
+    print("Initializing landing zone ...")
+    rm_hdfs(client_hdfs, path_temporal_hdfs)
+    client_hdfs.makedirs(path_temporal_hdfs)
+
+    # Upload sources
+    for source in sources:
+        print("Uploading",source,"...")
+        upload_source_to_hdfs(client_hdfs, source)
+    print("Upload finished!")
+
+    print("Landgin zone status:")
+    du_hdfs(client_hdfs,path_temporal_hdfs)
