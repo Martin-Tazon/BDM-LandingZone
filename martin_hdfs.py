@@ -5,11 +5,31 @@ sources = ['idealista', 'lookup_tables', 'opendatabcn-income']
 path_temporal_hdfs='user/bdm/temporal_landing/'
 
 def ls_hdfs(client, path: str) -> list[str]:
+    """
+    List the files and directories in the specified HDFS path.
+
+    Args:
+        client (InsecureClient): The HDFS client object.
+        path (str): The HDFS path to list.
+
+    Returns:
+        list[str]: A list of file and directory names in the specified path.
+    """
     if not path.startswith('user/bdm/'):
         path = 'user/bdm/' + path
     return client.list(path)
 
 def du_hdfs(client, path: str) -> None:
+    """
+    Display the size of the specified HDFS path and its subdirectories.
+
+    Args:
+        client (InsecureClient): The HDFS client object.
+        path (str): The HDFS path to check.
+
+    Returns:
+        None
+    """
     if not path.startswith('user/bdm/'):
         path = 'user/bdm/' + path
     content = client.content(path)
@@ -22,9 +42,30 @@ def du_hdfs(client, path: str) -> None:
             print(f"    {sdir}: {content_sd['length']} bytes")
 
 def rm_hdfs(client, path: str, recursive: bool = True):
+    """
+    Delete the specified HDFS path.
+
+    Args:
+        client (InsecureClient): The HDFS client object.
+        path (str): The HDFS path to delete.
+        recursive (bool, optional): Whether to delete subdirectories recursively. Defaults to True.
+
+    Returns:
+        None
+    """
     return client.delete(path, recursive=recursive)
 
 def upload_source_to_hdfs(client, source: str) -> None:
+    """
+    Upload the files from the local directory to the specified HDFS path.
+
+    Args:
+        client (InsecureClient): The HDFS client object.
+        source (str): The name of the source directory.
+
+    Returns:
+        None
+    """
     local_path = f"data/{source}/"
     hdfs_path = path_temporal_hdfs + source
 
@@ -52,5 +93,5 @@ if __name__ == "__main__":
         upload_source_to_hdfs(client_hdfs, source)
     print("Upload finished!")
 
-    print("Landgin zone status:")
+    print("Landing zone status:")
     du_hdfs(client_hdfs,path_temporal_hdfs)
