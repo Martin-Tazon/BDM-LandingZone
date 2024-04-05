@@ -89,8 +89,7 @@ def download_source_to_hdfs(client, source: str, outdir: str) -> None:
         None
     """
     outdir = outdir + "/" + source + "/"
-    hdfs_path = path_temporal_hdfs + source
-
+    hdfs_path = path_temporal_hdfs + source + "/"
     for f in client.list(hdfs_path):
         client.download(hdfs_path + f, outdir + f)
 
