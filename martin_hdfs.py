@@ -75,7 +75,7 @@ def upload_source_to_hdfs(client, source: str) -> None:
         try:
             client.upload(hdfs_path, local_path + f)
         except:
-            print(f"These {f} already exist")
+            print(f"This {f} already exist")
 
 
 
