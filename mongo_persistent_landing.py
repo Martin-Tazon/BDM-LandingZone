@@ -29,8 +29,7 @@ def json_to_json(json_file):
 
 # PREPARE PERSISTENT LANDING
 def add_files_to_db(db, path):
-    files = sorted(glob(path + f"/*"))
-
+    files = sorted(glob(path + f"\*"))
     for file in files:
         format = file.split(".")[-1]
         if format not in KNOWN_FORMATS:
@@ -40,11 +39,11 @@ def add_files_to_db(db, path):
         # Create a collection for the CSV file
         current_time = datetime.datetime.now()
         collection = db[fn + "-" + current_time.strftime("%Y-%m-%dT%H:%M:%S")]
-
         # Insert the JSON data into the collection
-        if format == ".csv":
+        if format == "csv":
             collection.insert_many(csv_to_json(file))
-        elif format == ".json":
+        elif format == "json":
+            if json_to_json(file) == []: continue
             collection.insert_many(json_to_json(file))
 
 
@@ -65,7 +64,7 @@ if __name__ == "__main__":
         download_source_to_hdfs(client_hdfs, source, "temporal_local/")
 
         # Uplod to mongo
-        path = "temporal_local/" + source + "/"
+        path = "temporal_local\\" + source + "\\"
         add_files_to_db(db, path)
 
     client_mongo.close()
