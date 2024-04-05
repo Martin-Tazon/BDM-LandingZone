@@ -1,5 +1,6 @@
 from hdfs import InsecureClient
 import os
+import sys
 
 sources = ['idealista', 'lookup_tables', 'opendatabcn-income']
 path_temporal_hdfs='user/bdm/temporal_landing/'
@@ -71,7 +72,10 @@ def upload_source_to_hdfs(client, source: str) -> None:
 
     client.makedirs(hdfs_path)
     for f in os.listdir(local_path):
-        client.upload(hdfs_path, local_path + f)
+        try:
+            client.upload(hdfs_path, local_path + f)
+        except:
+            print(f"These {f} already exist")
 
 
 
@@ -82,16 +86,20 @@ if __name__ == "__main__":
     client_hdfs = InsecureClient('http://10.4.41.44:9870/', user='bdm')
     print(client_hdfs)
 
-    # Initialize temporal landing dir
-    print("Initializing landing zone ...")
-    rm_hdfs(client_hdfs, path_temporal_hdfs)
-    client_hdfs.makedirs(path_temporal_hdfs)
+    removeFlag = int(sys.argv[1])
+    if removeFlag:
+        # Initialize temporal landing dir
+        print("Initializing landing zone ...")
+        rm_hdfs(client_hdfs, path_temporal_hdfs)
+        client_hdfs.makedirs(path_temporal_hdfs)
 
     # Upload sources
+    
     for source in sources:
         print("Uploading",source,"...")
         upload_source_to_hdfs(client_hdfs, source)
     print("Upload finished!")
+
 
     print("Landing zone status:")
     du_hdfs(client_hdfs,path_temporal_hdfs)
