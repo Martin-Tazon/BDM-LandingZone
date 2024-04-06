@@ -77,7 +77,7 @@ def upload_source_to_hdfs(client, source: str) -> None:
         except:
             print(f"These {f} already exist")
 
-def download_source_to_hdfs(client, source: str, outdir: str) -> None:
+def download_source_from_hdfs(client, source: str, outdir: str) -> None:
     """
     Download the files from the specified HDFS path to the local directory.
 
