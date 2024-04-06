@@ -25,6 +25,10 @@ The first serves as a temporary location to store the data that is to be added t
   In addition, there are also functions to upload/download a complete source to/from the HDFS.
   The main usage of the script is to upload all sources listed in the sources list. The script accepts one system argument to decide if the temporal landing zone should be cleared before the upload.
 
+  How to run this file: 
+  Go to the current directory it exists and write in the terminal 'python hdfs_temporal_landing.py 0'
+  or  'python hdfs_temporal_landing.py 1'. 1 implies that we want to clear the directory before uploading, while 0, does not remove anything and checks if a file exists before re-uploading it to avoid duplicates.
+
 
 - `mongo_persistent_landing.py`:
 
@@ -35,3 +39,6 @@ The first serves as a temporary location to store the data that is to be added t
   - csv
     
   The script creates a temporary local directory that is deleted at the end of the execution.
+
+  How to run this file: 
+  Go to the current directory it exists and write in the terminal 'python hdfs_persistent_landing.py'
