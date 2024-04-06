@@ -21,6 +21,7 @@ The first serves as a temporary location to store the data that is to be added t
   - ls
   - rm
   - du
+    
   In addition, there are also functions to upload/download a complete source to/from the HDFS.
   The main usage of the script is to upload all sources listed in the sources list. The script accepts one system argument to decide if the temporal landing zone should be cleared before the upload.
 
@@ -32,4 +33,5 @@ The first serves as a temporary location to store the data that is to be added t
   Available formats:
   - json
   - csv
+    
   The script creates a temporary local directory that is deleted at the end of the execution.
