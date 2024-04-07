@@ -42,3 +42,4 @@ The first serves as a temporary location to store the data that is to be added t
 
   How to run this file: 
   Go to the current directory it exists and write in the terminal 'python hdfs_persistent_landing.py'
+  Note: Since we are using MongoDB Atlas, to connect in our database, Atlas needs to know the IP from which the user is trying to connect. The IPs are added in Atlas manually. 
